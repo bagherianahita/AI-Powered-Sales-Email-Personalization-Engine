@@ -33,6 +33,11 @@ python demo.py
 
 Generates sample personalized B2B emails for two demo leads.
 
+| | URL |
+|---|-----|
+| **Web UI** | _N/A — terminal demo_ |
+| **Run** | `python demo.py` (prints sample emails) |
+
 ---
 
 ## License
