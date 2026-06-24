@@ -1,0 +1,4 @@
+openai>=1.40.0
+jupyter>=1.0.0
+pandas>=2.0.0
+spacy>=3.7.0
