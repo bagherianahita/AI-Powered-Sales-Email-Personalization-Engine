@@ -24,14 +24,14 @@
 
 ---
 
-## Quick start
+## Quick start (employers — no API keys)
 
 ```bash
 pip install -r requirements.txt
-jupyter notebook AI_Powered_Sales_Email_Personalization_Engine.ipynb
+python demo.py
 ```
 
-Set `OPENAI_API_KEY` in your environment before running LLM cells.
+Generates sample personalized B2B emails for two demo leads.
 
 ---
 
