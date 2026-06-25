@@ -1,4 +1,4 @@
-# AI-Powered Sales Email Personalization
+﻿# AI-Powered Sales Email Personalization
 
 **Notebook prototype** for B2B sales email personalization using NLP and LLM techniques. Explores RAG-style personalization workflows before production hardening.
 <img width="1764" height="548" alt="image" src="https://github.com/user-attachments/assets/f049ae1a-5701-4cb8-801f-4b64157e4516" />
@@ -25,7 +25,7 @@
 
 ---
 
-## Quick start (employers — no API keys)
+## Quick start
 
 ```bash
 pip install -r requirements.txt
