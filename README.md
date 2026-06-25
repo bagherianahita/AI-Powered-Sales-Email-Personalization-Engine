@@ -28,7 +28,7 @@
 
 ```bash
 pip install -r requirements.txt
-python demo.py
+streamlit run app.py --server.port 8503
 ```
 
 Generates sample personalized B2B emails for two demo leads.
@@ -36,7 +36,7 @@ Generates sample personalized B2B emails for two demo leads.
 | | URL |
 |---|-----|
 | **Web UI** | _N/A — terminal demo_ |
-| **Run** | `python demo.py` (prints sample emails) |
+| **API** | _N/A_ |
 
 ---
 
