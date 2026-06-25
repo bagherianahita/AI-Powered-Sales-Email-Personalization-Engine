@@ -1,6 +1,7 @@
 # AI-Powered Sales Email Personalization
 
 **Notebook prototype** for B2B sales email personalization using NLP and LLM techniques. Explores RAG-style personalization workflows before production hardening.
+<img width="1764" height="548" alt="image" src="https://github.com/user-attachments/assets/f049ae1a-5701-4cb8-801f-4b64157e4516" />
 
 ![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-F37626?style=flat-square&logo=jupyter&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat-square&logo=python&logoColor=white)
