@@ -28,7 +28,7 @@
 
 ```bash
 pip install -r requirements.txt
-streamlit run app.py --server.port 8503
+streamlit run app.py --server.port 8504
 ```
 
 Generates sample personalized B2B emails for two demo leads.
