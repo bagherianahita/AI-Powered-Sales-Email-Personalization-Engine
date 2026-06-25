@@ -28,15 +28,17 @@
 
 ```bash
 pip install -r requirements.txt
-streamlit run app.py --server.port 8504
+streamlit run app.py
 ```
 
-Generates sample personalized B2B emails for two demo leads.
+Opens a **browser demo** with three sample leads. Click **Generate email** — works instantly without API keys. Optional: set `OPENAI_API_KEY` and enable **Use OpenAI** in the sidebar.
 
 | | URL |
 |---|-----|
-| **Web UI** | _N/A — terminal demo_ |
-| **API** | _N/A_ |
+| **Web UI (demo)** | http://localhost:8504 |
+| **Terminal demo** | `python demo.py` |
+
+> Default port is **8504** (configured in `.streamlit/config.toml`). Use `--server.port 8502` if another app is using 8504.
 
 ---
 

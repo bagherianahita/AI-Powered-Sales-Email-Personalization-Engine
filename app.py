@@ -1,7 +1,13 @@
-﻿import os
+﻿"""Streamlit demo — personalized B2B sales emails (no API keys required)."""
+
+from __future__ import annotations
+
+import os
 from datetime import datetime
 
 import streamlit as st
+
+DEFAULT_PORT = 8504
 
 SAMPLE_LEADS = [
     {
@@ -17,6 +23,13 @@ SAMPLE_LEADS = [
         "role": "Head of Product",
         "industry": "fintech",
         "pain_point": "slow onboarding for SMB clients",
+    },
+    {
+        "name": "Alex Rivera",
+        "company": "Summit Health",
+        "role": "Director of IT",
+        "industry": "healthcare",
+        "pain_point": "disconnected patient intake workflows",
     },
 ]
 
@@ -60,26 +73,78 @@ def try_llm_email(lead: dict, product: str, value_prop: str) -> str | None:
         return None
 
 
-st.set_page_config(page_title="Sales Email Personalization", layout="wide")
+st.set_page_config(
+    page_title="Sales Email Personalization",
+    page_icon="✉️",
+    layout="wide",
+)
+
 st.title("AI-Powered Sales Email Personalization")
-st.caption("Working prototype with defaults. Optional: set OPENAI_API_KEY for LLM drafting.")
+st.caption(
+    f"Working prototype with sample leads and instant email drafts. "
+    f"Optional: set `OPENAI_API_KEY` for LLM-generated copy."
+)
 
 with st.sidebar:
     st.header("Lead")
-    lead_idx = st.selectbox("Choose a sample lead", options=list(range(len(SAMPLE_LEADS))), format_func=lambda i: f"{SAMPLE_LEADS[i]['name']} — {SAMPLE_LEADS[i]['company']}")
+    lead_idx = st.selectbox(
+        "Choose a sample lead",
+        options=list(range(len(SAMPLE_LEADS))),
+        format_func=lambda i: f"{SAMPLE_LEADS[i]['name']} — {SAMPLE_LEADS[i]['company']}",
+    )
     lead = SAMPLE_LEADS[int(lead_idx)]
 
     st.header("Product")
     product = st.text_input("Product name", value="WorkflowIQ")
-    value_prop = st.text_input("Value proposition", value="reduce manual reporting time by ~40%")
+    value_prop = st.text_input(
+        "Value proposition",
+        value="reduce manual reporting time by ~40%",
+    )
 
-st.subheader("Lead profile")
-st.json(lead)
+    use_llm = st.toggle("Use OpenAI (if key set)", value=False)
+    generate = st.button("Generate email", type="primary", use_container_width=True)
 
-st.subheader("Generated email")
-llm = try_llm_email(lead, product, value_prop)
-email_text = llm or render_template_email(lead, product, value_prop)
+col_profile, col_email = st.columns([1, 2])
 
-st.text_area("", value=email_text, height=280)
+with col_profile:
+    st.subheader("Lead profile")
+    st.json(lead)
 
-st.download_button("Download .txt", data=email_text, file_name="sales_email.txt")
+with col_email:
+    st.subheader("Generated email")
+
+    if generate or "email_text" not in st.session_state:
+        llm = try_llm_email(lead, product, value_prop) if (use_llm and generate) else None
+        if llm:
+            st.session_state.email_text = llm
+            st.session_state.email_mode = "openai"
+        else:
+            st.session_state.email_text = render_template_email(lead, product, value_prop)
+            st.session_state.email_mode = "template"
+        st.session_state.lead_key = f"{lead_idx}|{product}|{value_prop}"
+
+    elif st.session_state.get("lead_key") != f"{lead_idx}|{product}|{value_prop}":
+        st.session_state.email_text = render_template_email(lead, product, value_prop)
+        st.session_state.email_mode = "template"
+        st.session_state.lead_key = f"{lead_idx}|{product}|{value_prop}"
+
+    mode = st.session_state.get("email_mode", "template")
+    if mode == "openai":
+        st.success("Generated with OpenAI")
+    else:
+        st.info("Demo mode — template email (no API keys)")
+
+    st.code(st.session_state.email_text, language=None)
+
+    st.download_button(
+        "Download .txt",
+        data=st.session_state.email_text,
+        file_name=f"sales_email_{lead['company'].replace(' ', '_').lower()}.txt",
+        use_container_width=True,
+    )
+
+st.divider()
+st.markdown(
+    f"**Run locally:** `streamlit run app.py` → http://localhost:{DEFAULT_PORT} "
+    f"(or pass `--server.port 8502` if 8504 is busy)"
+)
